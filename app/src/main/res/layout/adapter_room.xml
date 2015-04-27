@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/tvname"
+
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:textColor="#484848" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Price:  "
+                    android:id="@+id/textView3"
+                    android:layout_marginRight="0dp"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:id="@+id/tvPhone"
+                    android:textColor="#484848" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Max People Allowed:"
+                    android:id="@+id/textView4"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:id="@+id/tvMaxPeople"
+                    android:textColor="#484848" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cbadd"
+                    android:button="@drawable/drawable_checkbox"
+                    android:padding="10dp"
+                    android:textColor="#fff" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No. Of People"
+                        android:id="@+id/textView34"
+                        android:layout_marginRight="5dp"
+                        android:textColor="#000" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical">
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/btnDecrement"
+                            android:background="@drawable/b_minus" />
+
+                        <Button
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/btnNumberOfPeople"
+                            android:background="@drawable/b_number_bg"
+                            android:text="0"
+                            android:textColor="#000" />
+
+                        <Button
+                            android:layout_width="30dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/btnIncrement"
+                            android:background="@drawable/b_plus" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/imageView"
+            android:scaleType="centerCrop" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:text="New Text"
+        android:id="@+id/textView5"
+        android:background="#000" />
+</LinearLayout>
