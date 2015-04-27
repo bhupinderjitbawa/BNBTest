@@ -49,7 +49,7 @@ public class Checkout extends Activity {
 
     private LinearLayout llProgressLayout;
     private float tax = 0;
-    TextView tvCVVRequired;
+    private TextView tvCVVRequired;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
