@@ -108,55 +108,62 @@ public class PropertyList extends Activity {
 
         @Override
         protected Void doInBackground(Void... voids) {
-//            ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
-//            parameters.add(new BasicNameValuePair("xml","<CRSRequest><Auth><VendorId>ENiagara</VendorId><VendorPassword>Exp!Niagara34x89</VendorPassword></Auth><Method>GetAvailability</Method></CRSRequest>"));
+            ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            parameters.add(new BasicNameValuePair("xml","<CRSRequest><Auth><VendorId>ENiagara</VendorId><VendorPassword>Exp!Niagara34x89</VendorPassword></Auth><Method>GetAvailability</Method><ArrivalDate>"
+                    +availableDate+"</ArrivalDate><NumAdults>"+adults+"</NumAdults><NumChildren>"
+                    +children+"</NumChildren><DepartureDate>"
+                    +availableDateTo+"</DepartureDate><GeoId>"+geoId+"</GeoId></CRSRequest>" ));
 
             WebServiceHandler wsh = new WebServiceHandler();
-            try {
-                String lineEnd = "\r\n";
-                String twoHyphens = "--";
-                String boundary =  "RQdzAAihJq7Xp1kjraqf";
+            String responseString = wsh.getWebServiceData("https://www.bnbmanager.com/ext_crshandler.php", parameters);
+            TheXMLParser parser = new TheXMLParser();
+            propertyModelArrayList = parser.getAvailability(responseString);
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                DataOutputStream dos = new DataOutputStream(baos);
-
-                // Send parameter #1
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"xml\"" + lineEnd);
-                dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + lineEnd);
-                dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd);
-                dos.writeBytes(lineEnd);
-                dos.writeBytes("<CRSRequest><Auth><VendorId>ENiagara</VendorId><VendorPassword>Exp!Niagara34x89</VendorPassword></Auth><Method>GetAvailability</Method><ArrivalDate>"
-                        +availableDate+"</ArrivalDate><NumAdults>"+adults+"</NumAdults><NumChildren>"
-                        +children+"</NumChildren><DepartureDate>"
-                        +availableDateTo+"</DepartureDate><GeoId>"+geoId+"</GeoId></CRSRequest>" + lineEnd);
-
-                dos.flush();
-                dos.close();
-
-                ByteArrayInputStream content = new ByteArrayInputStream(baos.toByteArray());
-                BasicHttpEntity entity = new BasicHttpEntity();
-                entity.setContent(content);
-
-                HttpPost httpPost = new HttpPost("https://www.bnbmanager.com/ext_crshandler.php");
-                httpPost.addHeader("Connection", "Keep-Alive");
-                httpPost.addHeader("Content-Type", "multipart/form-data; boundary="+boundary);
-
-
-                httpPost.setEntity(entity);
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse response = httpclient.execute(httpPost);
-                String responseString = wsh.inputStreamToString(response.getEntity().getContent()).toString();
-                TheXMLParser parser = new TheXMLParser();
-                propertyModelArrayList = parser.getAvailability(responseString);
-
-
-                Log.e("JSONResponse: ", responseString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e){
-
-            }
+//            try {
+//                String lineEnd = "\r\n";
+//                String twoHyphens = "--";
+//                String boundary =  "RQdzAAihJq7Xp1kjraqf";
+//
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                DataOutputStream dos = new DataOutputStream(baos);
+//
+//                // Send parameter #1
+//                dos.writeBytes(twoHyphens + boundary + lineEnd);
+//                dos.writeBytes("Content-Disposition: form-data; name=\"xml\"" + lineEnd);
+//                dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + lineEnd);
+//                dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd);
+//                dos.writeBytes(lineEnd);
+//                dos.writeBytes("<CRSRequest><Auth><VendorId>ENiagara</VendorId><VendorPassword>Exp!Niagara34x89</VendorPassword></Auth><Method>GetAvailability</Method><ArrivalDate>"
+//                        +availableDate+"</ArrivalDate><NumAdults>"+adults+"</NumAdults><NumChildren>"
+//                        +children+"</NumChildren><DepartureDate>"
+//                        +availableDateTo+"</DepartureDate><GeoId>"+geoId+"</GeoId></CRSRequest>" + lineEnd);
+//
+//                dos.flush();
+//                dos.close();
+//
+//                ByteArrayInputStream content = new ByteArrayInputStream(baos.toByteArray());
+//                BasicHttpEntity entity = new BasicHttpEntity();
+//                entity.setContent(content);
+//
+//                HttpPost httpPost = new HttpPost("https://www.bnbmanager.com/ext_crshandler.php");
+//                httpPost.addHeader("Connection", "Keep-Alive");
+//                httpPost.addHeader("Content-Type", "multipart/form-data; boundary="+boundary);
+//
+//
+//                httpPost.setEntity(entity);
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpResponse response = httpclient.execute(httpPost);
+//                String responseString = wsh.inputStreamToString(response.getEntity().getContent()).toString();
+//                TheXMLParser parser = new TheXMLParser();
+//                propertyModelArrayList = parser.getAvailability(responseString);
+//
+//
+//                Log.e("JSONResponse: ", responseString);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } catch (Exception e){
+//
+//            }
             return null;
         }
 

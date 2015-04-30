@@ -12,16 +12,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -128,6 +131,7 @@ public class Checkout extends Activity {
         @Override
         protected Void doInBackground(Void... voids) {
 
+            ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
             arrivalDate = getIntent().getStringExtra("arrivalDate");
             departureDate = getIntent().getStringExtra("departureDate");
             adults = getIntent().getStringExtra("adults");
@@ -156,49 +160,53 @@ public class Checkout extends Activity {
             Log.i("xml", xml);
 
             WebServiceHandler wsh = new WebServiceHandler();
-            try {
-                String lineEnd = "\r\n";
-                String twoHyphens = "--";
-                String boundary = "RQdzAAihJq7Xp1kjraqf";
-
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                DataOutputStream dos = new DataOutputStream(baos);
-
-                // Send parameter #1
-                dos.writeBytes(twoHyphens + boundary + lineEnd);
-                dos.writeBytes("Content-Disposition: form-data; name=\"xml\"" + lineEnd);
-                dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + lineEnd);
-                dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd);
-                dos.writeBytes(lineEnd);
-                dos.writeBytes(xml
-                        + lineEnd);
-
-                dos.flush();
-                dos.close();
-
-                ByteArrayInputStream content = new ByteArrayInputStream(baos.toByteArray());
-                BasicHttpEntity entity = new BasicHttpEntity();
-                entity.setContent(content);
-
-                HttpPost httpPost = new HttpPost("https://www.bnbmanager.com/ext_crshandler.php");
-                httpPost.addHeader("Connection", "Keep-Alive");
-                httpPost.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
-
-
-                httpPost.setEntity(entity);
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse response = httpclient.execute(httpPost);
-                String responseString = wsh.inputStreamToString(response.getEntity().getContent()).toString();
-                TheXMLParser parser = new TheXMLParser();
-                UniqueId = parser.getUniqueId(responseString);
-
-
-                Log.e("JSONResponse: ", responseString);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }catch (Exception e){
-
-            }
+            parameters.add(new BasicNameValuePair("xml",xml));
+            String responseString = wsh.getWebServiceData("https://www.bnbmanager.com/ext_crshandler.php", parameters);
+            TheXMLParser parser = new TheXMLParser();
+            UniqueId = parser.getUniqueId(responseString);
+//            try {
+//                String lineEnd = "\r\n";
+//                String twoHyphens = "--";
+//                String boundary = "RQdzAAihJq7Xp1kjraqf";
+//
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                DataOutputStream dos = new DataOutputStream(baos);
+//
+//                // Send parameter #1
+//                dos.writeBytes(twoHyphens + boundary + lineEnd);
+//                dos.writeBytes("Content-Disposition: form-data; name=\"xml\"" + lineEnd);
+//                dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + lineEnd);
+//                dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd);
+//                dos.writeBytes(lineEnd);
+//                dos.writeBytes(xml
+//                        + lineEnd);
+//
+//                dos.flush();
+//                dos.close();
+//
+//                ByteArrayInputStream content = new ByteArrayInputStream(baos.toByteArray());
+//                BasicHttpEntity entity = new BasicHttpEntity();
+//                entity.setContent(content);
+//
+//                HttpPost httpPost = new HttpPost("https://www.bnbmanager.com/ext_crshandler.php");
+//                httpPost.addHeader("Connection", "Keep-Alive");
+//                httpPost.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+//
+//
+//                httpPost.setEntity(entity);
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpResponse response = httpclient.execute(httpPost);
+//                String responseString = wsh.inputStreamToString(response.getEntity().getContent()).toString();
+//                TheXMLParser parser = new TheXMLParser();
+//                UniqueId = parser.getUniqueId(responseString);
+//
+//
+//                Log.e("JSONResponse: ", responseString);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }catch (Exception e){
+//
+//            }
             return null;
         }
 
