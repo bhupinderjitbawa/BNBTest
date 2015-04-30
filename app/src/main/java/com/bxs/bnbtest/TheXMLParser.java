@@ -162,6 +162,7 @@ public class TheXMLParser {
             // adding each child node to HashMap key => value
             unique.put("id",getValue(e, "UniqueBookingId"));
             unique.put("Error",getValue(e, "ErrorMessage"));
+            unique.put("BookingLevelDiscounts",getValue(e, "BookingLevelDiscounts"));
         }
 
             // creating new HashMap

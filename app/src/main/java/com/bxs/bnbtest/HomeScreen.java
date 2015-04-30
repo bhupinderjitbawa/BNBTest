@@ -194,6 +194,9 @@ public class HomeScreen extends Activity {
                     month + "-" + year);
 
             GregorianCalendar gc = new GregorianCalendar();
+//            gc.set(Calendar.YEAR, year);
+//            gc.set(Calendar.MONTH, Integer.parseInt(month));
+//            gc.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
             gc.set(year, Integer.parseInt(month), Integer.parseInt(day));
             gc.add(Calendar.DATE, 1);
             edtAvailabilityDateTo.setText(gc.get(Calendar.DAY_OF_MONTH) +"-"+gc.get(Calendar.MONTH)+"-"+gc.get(Calendar.YEAR));

@@ -52,6 +52,30 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:text="Discounts:"
+                        android:id="@+id/textView28"
+                        android:textColor="#000"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Text"
+                        android:id="@+id/tvDiscounts"
+                        android:layout_marginLeft="10dp"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|right"
+                    android:layout_marginBottom="10dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Tax: "
                         android:id="@+id/textView36"
                         android:textColor="#000"
@@ -134,7 +158,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtFirstName"
                     android:hint="First Name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="Bhupinderjit" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,7 +174,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtLastName"
                     android:hint="Last Name"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="Singh" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -164,7 +190,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtEmail"
                     android:hint="Email"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:text="bhupinderjitbawa@gmail.com" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -179,7 +206,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtPhone"
                     android:hint="Phone"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:text="9872122716" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -194,7 +222,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtAddress"
                     android:hint="Address"
-                    android:inputType="textMultiLine" />
+                    android:inputType="textMultiLine"
+                    android:text="khilchian" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -209,7 +238,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtCity"
                     android:hint="City"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="amritsar" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -224,7 +254,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtPostalCode"
                     android:hint="Postal Code"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="201301" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -239,7 +270,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtState"
                     android:hint="State"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="punjab" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -254,7 +286,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtCountry"
                     android:hint="Country"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="india" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -300,7 +333,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtCreditCardNumber"
                     android:hint="Credit Card Number"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="4111111111111111" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -315,7 +349,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtExpYear"
                     android:hint="Exp Year (yyyy)"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="2019" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -330,7 +365,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtExpMonth"
                     android:hint="Exp Month(mm)"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:text="06" />
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -359,7 +395,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/edtCVV"
                     android:hint="CVV"
-                    android:inputType="numberPassword" />
+                    android:inputType="numberPassword"
+                    android:text="123" />
 
                 <LinearLayout
                     android:orientation="vertical"

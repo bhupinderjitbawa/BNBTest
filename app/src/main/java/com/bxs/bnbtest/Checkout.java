@@ -53,6 +53,10 @@ public class Checkout extends Activity {
     private LinearLayout llProgressLayout;
     private float tax = 0;
     private TextView tvCVVRequired;
+    private TextView tvDiscounts;
+    private TextView tvPrice;
+    private String totalPriceValue = "";
+    private  NumberFormat formatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +82,9 @@ public class Checkout extends Activity {
         });
 
         try {
-            TextView tvPrice = (TextView) findViewById(R.id.tvPrice);
+            tvPrice = (TextView) findViewById(R.id.tvPrice);
             TextView tvTax = (TextView) findViewById(R.id.tvTax);
+            tvDiscounts = (TextView) findViewById(R.id.tvDiscounts);
              tvCVVRequired = (TextView) findViewById(R.id.tvCVVRequired);
             TextView tvSubtotal = (TextView) findViewById(R.id.tvSubtotal);
             if(getIntent().getBooleanExtra("cvvRequired", false)== true){
@@ -94,7 +99,7 @@ public class Checkout extends Activity {
                     price += Float.parseFloat(elephantList.get(j));
 
             }
-            NumberFormat formatter = NumberFormat.getNumberInstance();
+             formatter = NumberFormat.getNumberInstance();
             formatter.setMinimumFractionDigits(2);
             formatter.setMaximumFractionDigits(2);
             String output = formatter.format(price);
@@ -102,10 +107,11 @@ public class Checkout extends Activity {
             float totalPrice = (price*taxAmount) + price;
             String taxValue = formatter.format(price*taxAmount);
 
-            String totalPriceValue = formatter.format((totalPrice));
+            totalPriceValue = formatter.format((totalPrice));
             tvSubtotal.setText("$"+price);
             tvTax.setText("$"+taxValue);
             tvPrice.setText("$"+totalPriceValue);
+            new CheckPricesTask().execute();
         } catch (NumberFormatException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -162,6 +168,7 @@ public class Checkout extends Activity {
             WebServiceHandler wsh = new WebServiceHandler();
             parameters.add(new BasicNameValuePair("xml",xml));
             String responseString = wsh.getWebServiceData("https://www.bnbmanager.com/ext_crshandler.php", parameters);
+            Log.i("response", responseString);
             TheXMLParser parser = new TheXMLParser();
             UniqueId = parser.getUniqueId(responseString);
 //            try {
@@ -216,10 +223,124 @@ public class Checkout extends Activity {
             llProgressLayout.setVisibility(View.GONE);
             Constants.bookModel = new BookModel();
             Intent intent = new Intent(Checkout.this, ThanksPage.class);
-            intent.putExtra("transaction", UniqueId.get("id")+"");
+            intent.putExtra("transaction", UniqueId.get("id") + "");
             intent.putExtra("error", UniqueId.get("Error"));
             startActivity(intent);
-            finish();
+            if(Utilities.hasData(UniqueId.get("id")))
+                finish();
+        }
+    }
+
+
+    private class CheckPricesTask extends AsyncTask<Void, Void, Void> {
+
+        private String arrivalDate ="";
+        private String departureDate ="";
+        private String adults ="";
+        private String children ="";
+        private String xml = "";
+        HashMap<String, String> UniqueId = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            llProgressLayout.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            arrivalDate = getIntent().getStringExtra("arrivalDate");
+            departureDate = getIntent().getStringExtra("departureDate");
+            adults = getIntent().getStringExtra("adults");
+            children = getIntent().getStringExtra("children");
+            String properties = "";
+            properties += "<PropertyId>"+Constants.bookModel.getPropertyId() +"</PropertyId>";
+            properties += "<RoomList>";
+            for(int i=0;i<Constants.bookModel.getRoomModelArrayList().size();i++){
+                properties += "<Room><RoomId>"+Constants.bookModel.getRoomModelArrayList().get(i).getId()+"</RoomId><RoomPeople>"+Constants.bookModel.getRoomModelArrayList().get(i).getMaxPeople()+"</RoomPeople></Room>";
+            }
+            properties += "</RoomList>";
+
+            xml = "<CRSRequest><Auth><VendorId>ENiagara</VendorId><VendorPassword>Exp!Niagara34x89</VendorPassword></Auth>"+
+                    "<Method>CheckPrices</Method><ArrivalDate>"+arrivalDate+"</ArrivalDate>"+
+                    "<NumAdults>"+adults+"</NumAdults><NumChildren>"+children+"</NumChildren><DepartureDate>"+departureDate+"</DepartureDate>"+
+                    "<GeoId>"+getIntent().getStringExtra("geoId")+"</GeoId>"+
+                    properties+
+//                    "<GuestFirstName>"+edtFirstName.getText().toString()+"</GuestFirstName><GuestLastName>"+edtLastName.getText().toString()+"</GuestLastName>"+
+//                    "<GuestEmail>"+edtEmail.getText().toString()+"</GuestEmail>"+
+//                    "<GuestPhone>"+edtPhone.getText().toString()+"</GuestPhone><GuestAddress1>"+edtAddress.getText().toString()+"</GuestAddress1>"+
+//                    "<GuestCity>"+edtCity.getText().toString()+"</GuestCity><GuestPostal>"+edtPostalCode.getText().toString()+"</GuestPostal>"+
+//                    "<GuestState>"+edtState.getText().toString()+"</GuestState><GuestCountry>"+edtCountry.getText().toString()+"</GuestCountry>"+
+//                    "<CreditCard>"+edtCreditCardNumber.getText().toString()+"</CreditCard><CCExpiryYear>"+edtExpYear.getText().toString()+"</CCExpiryYear>"+
+//                    "<CCExpiryMonth>"+edtExpMonth.getText().toString()+"</CCExpiryMonth><CVV>"+edtCVV.getText().toString()+"</CVV>"+
+                    "<PolicyAcknowledged>TRUE</PolicyAcknowledged><OtherInformation>sometext</OtherInformation></CRSRequest>";
+            Log.i("xml", xml);
+
+            WebServiceHandler wsh = new WebServiceHandler();
+            parameters.add(new BasicNameValuePair("xml",xml));
+            String responseString = wsh.getWebServiceData("https://www.bnbmanager.com/ext_crshandler.php", parameters);
+            Log.i("response", responseString);
+            TheXMLParser parser = new TheXMLParser();
+            UniqueId = parser.getUniqueId(responseString);
+//            try {
+//                String lineEnd = "\r\n";
+//                String twoHyphens = "--";
+//                String boundary = "RQdzAAihJq7Xp1kjraqf";
+//
+//                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                DataOutputStream dos = new DataOutputStream(baos);
+//
+//                // Send parameter #1
+//                dos.writeBytes(twoHyphens + boundary + lineEnd);
+//                dos.writeBytes("Content-Disposition: form-data; name=\"xml\"" + lineEnd);
+//                dos.writeBytes("Content-Type: text/plain; charset=US-ASCII" + lineEnd);
+//                dos.writeBytes("Content-Transfer-Encoding: 8bit" + lineEnd);
+//                dos.writeBytes(lineEnd);
+//                dos.writeBytes(xml
+//                        + lineEnd);
+//
+//                dos.flush();
+//                dos.close();
+//
+//                ByteArrayInputStream content = new ByteArrayInputStream(baos.toByteArray());
+//                BasicHttpEntity entity = new BasicHttpEntity();
+//                entity.setContent(content);
+//
+//                HttpPost httpPost = new HttpPost("https://www.bnbmanager.com/ext_crshandler.php");
+//                httpPost.addHeader("Connection", "Keep-Alive");
+//                httpPost.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
+//
+//
+//                httpPost.setEntity(entity);
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpResponse response = httpclient.execute(httpPost);
+//                String responseString = wsh.inputStreamToString(response.getEntity().getContent()).toString();
+//                TheXMLParser parser = new TheXMLParser();
+//                UniqueId = parser.getUniqueId(responseString);
+//
+//
+//                Log.e("JSONResponse: ", responseString);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }catch (Exception e){
+//
+//            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            llProgressLayout.setVisibility(View.GONE);
+            String BookingLevelDiscounts = UniqueId.get("BookingLevelDiscounts");
+            if(!Utilities.hasData(BookingLevelDiscounts)){
+                BookingLevelDiscounts = "0.00";
+            }
+            tvDiscounts.setText("$"+BookingLevelDiscounts);
+            tvPrice.setText("$"+(Float.parseFloat(totalPriceValue)-Float.parseFloat(BookingLevelDiscounts)));
+
         }
     }
 

@@ -30,12 +30,14 @@ public class RoomAdapter extends BaseAdapter {
     private int arrivalYearInt = 0;
     private int arrivalMonthInt = 0;
     private int departureDateInt = 0;
-    public RoomAdapter(Context context, ArrayList<RoomModel> propertyModelArrayList,  String arrivalDate, String departureDate){
+    private int peopleCount = 0;
+    public RoomAdapter(Context context, ArrayList<RoomModel> propertyModelArrayList,  String arrivalDate, String departureDate, int peopleCount){
         this.context = context;
         this.roomModelArrayList = propertyModelArrayList;
         arrivalDateInt = Integer.parseInt(arrivalDate)%100;
         arrivalMonthInt = (Integer.parseInt(arrivalDate)/100)%100;
         arrivalYearInt = (Integer.parseInt(arrivalDate)/100)/100;
+        this.peopleCount = peopleCount;
 
         if(departureDate.length()==7)
             departureDateInt = Integer.parseInt(departureDate)%10;
@@ -146,7 +148,7 @@ public class RoomAdapter extends BaseAdapter {
             public void onClick(View view) {
                 try {
                     if(Constants.bookModel.getRoomModelArrayList().get(i)!=null) {
-                        if((Integer.parseInt(btnNop.getText().toString()) + 1) <=0) {
+                        if((Integer.parseInt(btnNop.getText().toString()) + 1) <=peopleCount) {
                             btnNop.setText((Integer.parseInt(btnNop.getText().toString()) + 1) + "");
                             Constants.bookModel.getRoomModelArrayList().get(i).setMaxPeople(btnNop.getText().toString());
                         } else {
@@ -165,7 +167,7 @@ public class RoomAdapter extends BaseAdapter {
         btnDecr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if((Integer.parseInt(btnNop.getText().toString()) - 1)>=0){
+                if((Integer.parseInt(btnNop.getText().toString()) - 1)>0){
                     btnNop.setText((Integer.parseInt(btnNop.getText().toString()) - 1) + "");
                     Constants.bookModel.getRoomModelArrayList().get(i).setMaxPeople(btnNop.getText().toString());
                 }
